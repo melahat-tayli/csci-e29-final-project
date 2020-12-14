@@ -4,7 +4,7 @@ import pandas as pd
 from luigi import LocalTarget, Parameter, Task
 
 from .load_data import TrainTestSplit
-from .preprocess_son import preprocess
+from .preprocess_heart import preprocess
 
 SHARED_RELATIVE_PATH = "data"
 
