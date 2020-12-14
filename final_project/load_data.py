@@ -1,7 +1,7 @@
 import os
 
 import pandas as pd
-from luigi import ExternalTask, Parameter, Task, format
+from luigi import ExternalTask, LocalTarget, Parameter, Task, format
 from luigi.contrib.s3 import S3Target
 from sklearn.model_selection import StratifiedShuffleSplit
 
@@ -27,6 +27,28 @@ class UploadRawData(Task):
 
         with self.output().open("w") as o:
             with open(local_data_path, "rb") as i:
+                o.write(i.read())
+
+
+class DownloadRawData(Task):
+    """Downloads amazon s3 bucket data to local"""
+
+    """In this project local data is needed for bokeh visualization"""
+
+    data = Parameter(default="heart.csv")  # Filename of the data file as a parameter
+
+    def requires(self):
+        return RawData(self.data)
+
+    def output(self):
+        """Returns S3Target"""
+        local_target_path = os.path.join(SHARED_RELATIVE_PATH, self.data)
+        return LocalTarget(local_target_path, format=format.Nop)
+
+    def run(self):
+        """ Writes external target to local data"""
+        with self.output().open("w") as o:
+            with self.input().open("r") as i:
                 o.write(i.read())
 
 
