@@ -8,10 +8,19 @@ pytest = "*"
 pytest-cov = "*"
 
 [packages]
-awscli = "*"
-pyarrow = "*"
+numpy = "*"
 pandas = "*"
-xlrd = "*"
-csci-utils = {editable = true,git = "https://github.com/csci-e-29/2020fa-csci-utils-melahat-tayli"}
+sklearn = "*"
+matplotlib = "*"
+luigi = '*'
+fsspec = "*"
+s3fs = "==0.4.2"
+boto3 ='*'
+statsmodels = "*"
+django = "==2.2.7"
+bokeh = "*"
+channels = "==2.4.0"
+panel = "*"
+
 [requires]
 python_version = "3.7"

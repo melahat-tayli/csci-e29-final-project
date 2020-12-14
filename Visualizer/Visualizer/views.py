@@ -16,36 +16,15 @@ from django.shortcuts import render
 theme = Theme(filename=join(settings.THEMES_DIR, "theme.yaml"))
 
 
-def crossfilter_handler(doc: Document) -> None:
+def visualization_handler(doc: Document) -> None:
     df = pd.read_csv(os.path.join(os.getcwd(), "../data/heart.csv")).copy()
-
     columns = sorted(df.columns)
-    discrete = [x for x in columns if df[x].dtype == object]
-    continuous = [x for x in columns if x not in discrete]
 
     def create_figure():
         xs = df[x.value].values
-        ys = df[y.value].values
         x_title = x.value.title()
-        y_title = y.value.title()
 
-        kw = dict()
-        if x.value in discrete:
-            kw["x_range"] = sorted(set(xs))
-        if y.value in discrete:
-            kw["y_range"] = sorted(set(ys))
-        kw["title"] = "%s vs %s" % (x_title, y_title)
-
-        p = figure(
-            plot_height=600, plot_width=800, tools="pan,box_zoom,hover,reset", **kw
-        )
-        p.xaxis.axis_label = x_title
-        p.yaxis.axis_label = y_title
-
-        if x.value in discrete:
-            p.xaxis.major_label_orientation = pd.np.pi / 4
-
-        hist, edges = np.histogram(xs, density=True, bins=50)
+        hist, edges = np.histogram(xs, density=False, bins=50)
         p = figure(title=x_title, tools="", background_fill_color="#fafafa")
         p.quad(
             top=hist,
@@ -60,34 +39,25 @@ def crossfilter_handler(doc: Document) -> None:
         p.y_range.start = 0
         p.legend.location = "center_right"
         p.legend.background_fill_color = "#fefefe"
-        p.xaxis.axis_label = "x"
-        p.yaxis.axis_label = "Pr(x)"
+        p.xaxis.axis_label = x_title
+        p.yaxis.axis_label = "Frequency"
         p.grid.grid_line_color = "white"
         return p
 
     def callback(attr: str, *args, **kwargs) -> None:
         layout.children[1] = create_figure()
 
-    x = Select(title="X-Axis", value="sex", options=columns)
+    x = Select(title="x-axis", value="age", options=columns)
     x.on_change("value", callback)
 
-    y = Select(title="Y-Axis", value="age", options=columns)
-    y.on_change("value", callback)
-
-    size = Select(title="Size", value="None", options=["None"] + continuous)
-    size.on_change("value", callback)
-
-    color = Select(title="Color", value="None", options=["None"] + continuous)
-    color.on_change("value", callback)
-
-    controls = column(x, y, color, size, width=200)
+    controls = column(x, width=200)
     layout = row(controls, create_figure())
 
     doc.theme = theme
     doc.add_root(layout)
-    doc.title = "Crossfilter"
+    doc.title = "Raw data histogram"
 
 
-def crossfilter(request: HttpRequest) -> HttpResponse:
+def visualization(request: HttpRequest) -> HttpResponse:
     script = server_document(request.build_absolute_uri())
     return render(request, "embed.html", dict(script=script))
