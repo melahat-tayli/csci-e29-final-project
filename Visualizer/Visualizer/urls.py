@@ -27,11 +27,14 @@ from . import views
 
 bokeh_app_config = apps.get_app_config("bokeh.server.django")
 
-urlpatterns = [path("admin/", admin.site.urls), path("crossfilter/", views.crossfilter)]
+urlpatterns = [
+    path("admin/", admin.site.urls),
+    path("visualization/", views.visualization),
+]
 
 base_path = settings.BASE_PATH
 
-bokeh_apps = [autoload("crossfilter", views.crossfilter_handler)]
+bokeh_apps = [autoload("visualization", views.visualization_handler)]
 
 apps_path = Path(bokeh.__file__).parent.parent / "examples" / "app"
 bokeh_apps += directory(apps_path)
