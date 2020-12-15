@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 from bokeh.document import Document
 from bokeh.embed import server_document
-from bokeh.layouts import column, layout, row
+from bokeh.layouts import column, row
 from bokeh.models import Select
 from bokeh.plotting import figure
 from bokeh.themes import Theme
@@ -45,7 +45,7 @@ def visualization_handler(doc: Document) -> None:
         return p
 
     def callback(attr: str, *args, **kwargs) -> None:
-        layout.children[1] = create_figure()
+        layout_plot.children[1] = create_figure()
 
     x = Select(title="x-axis", value="age", options=columns)
     x.on_change("value", callback)
