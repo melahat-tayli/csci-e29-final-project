@@ -25,7 +25,7 @@ def register(func):
 
 
 @register
-def test_model_performance(model_name, loaded_model, x_test, y_test):
+def model_performance(model_name, loaded_model, x_test, y_test):
     acc_score = loaded_model.score(x_test, y_test)
     return model_name, acc_score
 
@@ -59,7 +59,7 @@ class TestModel(Task):
         model_name = os.path.splitext(
             os.path.basename(self.input()["model_param"].path)
         )[0]
-        test_model_performance(model_name, loaded_model, x_test, y_test)
+        model_performance(model_name, loaded_model, x_test, y_test)
         df_registered_models = pd.DataFrame.from_dict(
             registered_models_and_scores, orient="index"
         )
@@ -78,7 +78,7 @@ class TestModel(Task):
         print("Registered_models_and_training_scores:", registered_models_and_scores)
         print("***********************")
         df_registered_models = pd.DataFrame.from_dict(
-            registered_models_and_scores, orient="index"
+            registered_models_and_scores, orient="index",
         )
         df_registered_models.to_csv(
             os.path.join(SHARED_RELATIVE_PATH, self.source_test + "scores.csv")

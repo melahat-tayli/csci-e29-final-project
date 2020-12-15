@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 from bokeh.document import Document
 from bokeh.embed import server_document
-from bokeh.layouts import column, row
+from bokeh.layouts import column, layout, row
 from bokeh.models import Select
 from bokeh.plotting import figure
 from bokeh.themes import Theme
@@ -51,13 +51,13 @@ def visualization_handler(doc: Document) -> None:
     x.on_change("value", callback)
 
     controls = column(x, width=200)
-    layout = row(controls, create_figure())
+    layout_plot = row(controls, create_figure())
 
     doc.theme = theme
-    doc.add_root(layout)
+    doc.add_root(layout_plot)
     doc.title = "Raw data histogram"
 
 
 def visualization(request: HttpRequest) -> HttpResponse:
     script = server_document(request.build_absolute_uri())
-    return render(request, "embed.html", dict(script=script))
+    return render(request, "visualization.html", dict(script=script))
