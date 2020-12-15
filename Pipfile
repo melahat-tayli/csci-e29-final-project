@@ -15,6 +15,7 @@ matplotlib = "*"
 luigi = '*'
 fsspec = "*"
 s3fs = "==0.4.2"
+boto3 = "*"
 statsmodels = "*"
 django = "==2.2.7"
 bokeh = "*"
