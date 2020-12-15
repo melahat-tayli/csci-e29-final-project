@@ -41,6 +41,7 @@ class DownloadRawDataTests(TestCase):
         self.assertEqual(len(DownloadRawData().get_params()), 1)
 
     def test_run_method(self):
+        build([DownloadRawData()], local_scheduler=True)
         self.assertTrue(DownloadRawData().output().exists())
 
 
@@ -89,7 +90,7 @@ class TrainTests(TestCase):
     def test_output_path(self):
         self.assertEqual(
             Train().output().path,
-            "/home/mt/harvard/2020fa-final-project-melahat-tayli/data/RandomForestClassifier_parameters.pkl",
+            os.path.join(os.getcwd(), "data/RandomForestClassifier_parameters.pkl"),
         )
 
     def test_output_return(self):
@@ -126,7 +127,7 @@ class PreProcessingTests(TestCase):
     def test_output_path(self):
         self.assertEqual(
             PreProcessing().output().path,
-            "/home/mt/harvard/2020fa-final-project-melahat-tayli/data/preprocessed_train.csv",
+            os.path.join(os.getcwd(), "data/preprocessed_train.csv"),
         )
 
     def test_run(self):
@@ -143,8 +144,7 @@ class TestModelTests(TestCase):
 
     def test_output_path(self):
         self.assertEqual(
-            TestModel().output().path,
-            "/home/mt/harvard/2020fa-final-project-melahat-tayli/data/plotting.png",
+            TestModel().output().path, os.path.join(os.getcwd(), "data/plotting.png")
         )
 
     def test_model_performance(self):
