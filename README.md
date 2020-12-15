@@ -7,7 +7,7 @@ The project has two packages: `final-project` and `Visualizer`:
 * `Visualizer` package implements the interactive visualization of raw data.
 
 
-###Installation:
+### Installation:
 This project uses Pipenv to build and manage the above described application and uses python 3.7.
 ```
 conda create -n py37 python=3.7
@@ -46,7 +46,7 @@ Also; models, graphs etc. are created in the data folder after running the luigi
 Luigi tasks are shared between the four modules: `load_data.py`, `preprocess_data.py`, `train.py`, `testperformance_model.py`
 
 
-####`load_data` module:
+#### `load_data` module:
 This module implements UploadRawData, DownloadRawData, RawData and TrainTestSplit Tasks.
 
 * `UploadRawData` task uploads the raw data to amazon s3 bucket. This is needed as data is assumed to be in amazon s3 bucket in
@@ -61,7 +61,7 @@ bucket, it is easy to reach it using the luigi pipeline. `UploadRawData` is not 
 If `train_or_test='train'`, it returns train data; if `train_or_test='test'`, it returns test data as csv file.
 
 
-####`preprocess_data` module:
+#### `preprocess_data` module:
 This module imports the function `preprocess` from `preprocessing_heart.py`. If an alternative data set
 is to be used, a new `preprocess` function should be written and imported.
 `preprocess_data` module implements a `PreProcessing` task. This task receives two parameters: `data` and `train_or_test` parameter.
@@ -69,20 +69,20 @@ is to be used, a new `preprocess` function should be written and imported.
 * `train_or_test` parameter addresses to which part of the data is used (`'train'` or `'test'`)
 
 
-####`train module:`
+#### `train module:`
 This module implements a task named `Train`.
 `Train` task takes data name, sklearn model name and train part of the data as parameters. It saves the trained model to data folder.
 Also, when running this Task, model name and train score will be printed on the screen. Model names and train scores will be
 also saved to `trainscores.csv` file in the data folder.
 
 
-####`testperformance_model` module:
+#### `testperformance_model` module:
 This module  implements `TestModel` task.
 `TestModel` task takes data name, train part of the data (`source_train`), test part of the data (`source_test`) and `model` name as parameters.
 This task loads the trained model and applies it on the test data. Model performance on the test data printed on the screen while running this task.
 Also, an automatic plotting file (plotting.png) is formed in tha data folder. This plot shows the bar plot of the model scores.
 
-####References:
+#### References:
 [1] Visualizer package is implemented by taking advantage of bokeh github repository.
 https://github.com/bokeh/bokeh/tree/branch-2.3/examples/app/crossfilter
 https://github.com/bokeh/bokeh/tree/branch-2.3/examples/howto/server_embed/django_embed
