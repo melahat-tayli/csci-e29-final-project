@@ -1,4 +1,6 @@
 # Final Project
+[![Build Status](https://travis-ci.com/melahat-tayli/2020fa-final-project-melahat-tayli.svg?token=dgPsxw4xayEVSd1T3haz&branch=master)](https://travis-ci.com/melahat-tayli/2020fa-final-project-melahat-tayli)
+
 ### Description:
 This project builds an automated data analysis pipeline using the Luigi python package. Additionally, the Bokeh python library has been used for interactive visualization of raw data histograms.
 Bokeh was integrated into the Django app [1].
